@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncAny.cs" />
     <Compile Include="DAL.cs" />
     <Compile Include="DALAsync.cs" />
     <Compile Include="Information.cs" />

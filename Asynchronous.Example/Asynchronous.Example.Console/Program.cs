@@ -13,11 +13,37 @@ namespace Asynchronous.Example.Console
         public const int RecordLength = 20000;
         static void Main(string[] args)
         {
+           
+
             List<Information> list = null;
-            list = GetTenThousandRecords();
+            //list = GetTenThousandRecords();
 
             //InsertTenThousandRecords(list);
-            InsertTenThousandRecordsAysnc(list);
+            //InsertTenThousandRecordsAysnc(list);
+            DownloadStuff();
+
+
+
+        }
+
+        private static void DownloadStuff()
+        {
+            AsyncAny anyExample = new AsyncAny();
+            System.Console.WriteLine("Click to do something. Quit with 'q'.");
+            while (true)
+            {
+                string message = System.Console.ReadLine();
+                if (message.ToLower() == "q") break;
+                if (message.ToLower() == "c")
+                {
+                    anyExample.cancelAsync();
+                } else
+                {
+                    anyExample.startAsync();
+                }
+
+
+            }
         }
 
 
