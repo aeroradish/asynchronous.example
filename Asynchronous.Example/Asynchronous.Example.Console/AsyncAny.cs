@@ -28,6 +28,8 @@ namespace Asynchronous.Example.Console
             // Instantiate the CancellationTokenSource.
             cts = new CancellationTokenSource();
 
+           // cts.CancelAfter(5000);
+
             try
             {
                 await AccessTheWebAsync(cts.Token);
@@ -35,6 +37,8 @@ namespace Asynchronous.Example.Console
             }
             catch (OperationCanceledException)
             {
+                System.Console.WriteLine("doing some other task.");
+
                 System.Console.WriteLine("Downloads canceled.");
             }
             catch (Exception)
@@ -73,6 +77,7 @@ namespace Asynchronous.Example.Console
                 // Identify the first task that completes.
                 Task<int> firstFinishedTask = await Task.WhenAny(downloadTasks);
 
+                
                 // ***Remove the selected task from the list so that you don't 
                 // process it more than once.
                 downloadTasks.Remove(firstFinishedTask);
