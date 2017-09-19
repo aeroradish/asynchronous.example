@@ -20,10 +20,26 @@ namespace Asynchronous.Example.Console
 
             //InsertTenThousandRecords(list);
             //InsertTenThousandRecordsAysnc(list);
-            DownloadStuff();
+            //DownloadStuff();
 
+            RepeatStuff();
 
+        }
 
+        private static void RepeatStuff()
+        {
+            RinseAndRepeat repeat = new RinseAndRepeat();
+            System.Console.WriteLine("Click to do something. Quit with 'q'.");
+            while (true)
+            {
+                string message = System.Console.ReadLine();
+                if (message.ToLower() == "q") break;
+                                                 
+                
+                repeat.StartRinseCycle();
+                
+
+            }
         }
 
         private static void DownloadStuff()
