@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace Asynchronous.Example.Console
 {
     class Program
     {
+        private static DALAsync dalAsync = new DALAsync();
         public const int RecordLength = 20000;
         static void Main(string[] args)
         {
@@ -51,18 +53,26 @@ namespace Asynchronous.Example.Console
         private static void InsertTenThousandRecords(List<Information> list)
         {
             DAL dal = new DAL();
+            SqlConnection con = DAL.GetConnection();
+
+            con.Open();
 
             for (int i = 0; i < list.Count; i++)
             {
-                dal.InformationInsert(list[i]);
+                dal.InformationInsert(list[i], con);
             }
+
+            con.Close();
+
+            con = null;
+
         }
 
         private static void InsertTenThousandRecordsAysnc(List<Information> list)
         {
             int skip = 0;
             List<Information> subList = null;
-            DAL dal = new DAL();
+            
             int take = 10;
 
             while (skip < RecordLength)
@@ -94,7 +104,7 @@ namespace Asynchronous.Example.Console
                 TaskList.Add(task8);
                 TaskList.Add(task9);
                 TaskList.Add(task0);
-                
+
                 Task.WaitAll(TaskList.ToArray());
 
                 skip += take;
@@ -105,10 +115,8 @@ namespace Asynchronous.Example.Console
 
         public static async Task Insert(Information model)
         {
-
-            DAL dal = new DAL();
-            var ddaAcct = await dal.InformationInsertAsync(model);
-
+            
+            var ddaAcct = await dalAsync.InformationInsertAsync(model);
 
         }
 

@@ -1,46 +1,50 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper;
-using System.Data.SqlClient;
-using System.Data;
 
 namespace Asynchronous.Example.Console
 {
-    public class DAL
+    public class DALAsync
     {
-        public static SqlConnection GetConnection()
+        public static string DefaultConnectionString =
+                    System.Configuration.ConfigurationManager.ConnectionStrings["default"]
+                        .ConnectionString;
+        public string ConnectionString;
+        protected SqlConnection _connection;
+        protected SqlConnection Connection
         {
-            return new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["default"].ConnectionString);
+            get
+            {
+                if (_connection == null)
+                    _connection = GetConnection();
+                return _connection;
+            }
+            set { _connection = value; }
         }
 
-        public int InformationInsert(Information model, SqlConnection con)
+        public static SqlConnection GetDefaultConnection()
         {
-            int rc = 0;
+            return new SqlConnection(DefaultConnectionString);
+        }
 
-            //using (SqlConnection con = GetConnection())
-            //{
-                var p = new DynamicParameters();
-                p.Add("Description", model.Description, DbType.String);
-                p.Add("Col1", model.Col1, DbType.String);
-                p.Add("Col2", model.Col2, DbType.String);
-                p.Add("Col3", model.Col3, DbType.String);
-                p.Add("Col4", model.Col4, DbType.String);
+        public SqlConnection GetConnection()
+        {
+            return new SqlConnection(ConnectionString ?? DefaultConnectionString);
+        }
 
-                p.Add("Col5", model.Col5, DbType.String);
-                p.Add("Col6", model.Col6, DbType.String);
-                p.Add("Col7", model.Col7, DbType.String);
-                p.Add("Col8", model.Col8, DbType.String);
+        public DALAsync()
+        {
+            ConnectionString = DefaultConnectionString;
+        }
 
-                //con.Open();
-
-                rc = con.Execute("dbo.InformationInsert", p, commandType: CommandType.StoredProcedure);
-
-           // }
-
-            return rc;
+        public DALAsync(string connectionString)            
+        {
+            ConnectionString = connectionString;
         }
 
         public async Task<int> InformationInsertAsync(Information model)
