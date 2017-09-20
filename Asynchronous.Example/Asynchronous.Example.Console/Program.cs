@@ -10,19 +10,22 @@ namespace Asynchronous.Example.Console
     class Program
     {
         private static DALAsync dalAsync = new DALAsync();
-        public const int RecordLength = 20000;
+        public const int RecordLength = 10000;
         static void Main(string[] args)
         {
            
 
             List<Information> list = null;
-            //list = GetTenThousandRecords();
+            list = GetTenThousandRecords();
 
-            //InsertTenThousandRecords(list);
-            //InsertTenThousandRecordsAysnc(list);
+            InsertTenThousandRecordsAysnc(list);
             //DownloadStuff();
 
-            RepeatStuff();
+            //RepeatStuff();
+
+            //int i = 0;
+            //Information model = new Information();
+            //i = dalAsync.InformationInsertAsync(model).Result;
 
         }
 
@@ -91,25 +94,7 @@ namespace Asynchronous.Example.Console
             return list;
 
         }
-
-        private static void InsertTenThousandRecords(List<Information> list)
-        {
-            DAL dal = new DAL();
-            SqlConnection con = DAL.GetConnection();
-
-            con.Open();
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                dal.InformationInsert(list[i], con);
-            }
-
-            con.Close();
-
-            con = null;
-
-        }
-
+        
         private static void InsertTenThousandRecordsAysnc(List<Information> list)
         {
             int skip = 0;

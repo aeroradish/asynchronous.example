@@ -15,34 +15,7 @@ namespace Asynchronous.Example.Console
         {
             return new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["default"].ConnectionString);
         }
-
-        public int InformationInsert(Information model, SqlConnection con)
-        {
-            int rc = 0;
-
-            //using (SqlConnection con = GetConnection())
-            //{
-                var p = new DynamicParameters();
-                p.Add("Description", model.Description, DbType.String);
-                p.Add("Col1", model.Col1, DbType.String);
-                p.Add("Col2", model.Col2, DbType.String);
-                p.Add("Col3", model.Col3, DbType.String);
-                p.Add("Col4", model.Col4, DbType.String);
-
-                p.Add("Col5", model.Col5, DbType.String);
-                p.Add("Col6", model.Col6, DbType.String);
-                p.Add("Col7", model.Col7, DbType.String);
-                p.Add("Col8", model.Col8, DbType.String);
-
-                //con.Open();
-
-                rc = con.Execute("dbo.InformationInsert", p, commandType: CommandType.StoredProcedure);
-
-           // }
-
-            return rc;
-        }
-
+        
         public async Task<int> InformationInsertAsync(Information model)
         {
 
